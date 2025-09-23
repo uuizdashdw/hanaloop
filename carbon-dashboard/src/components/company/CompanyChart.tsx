@@ -20,7 +20,8 @@ import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 
 // Utils
-import { generateColors, generateYearMonthRangeFromData } from "@/utils";
+import { COUNTRY_MAP, generateColors, generateYearMonthRangeFromData } from "@/utils";
+import { useFilteredEmissions } from "@/hooks/useFilteredEmissions";
 
 const BaseLineChart = dynamic(() => import("@/components/common/BaseLineChart"), { ssr: false });
 
@@ -39,33 +40,7 @@ export default function CompanyChart() {
     retry: 1,
   });
 
-  const [period, setPeriod] = useState(12);
-
-  // 회사별 emissions 를 월 기준으로 데이터를 합칩니다.
-  const filteredData = useMemo(() => {
-    if (!companies) return [];
-
-    const months = generateYearMonthRangeFromData(companies, period);
-
-    const merged: Record<string, any> = {};
-    months.forEach((ym) => {
-      merged[ym] = { yearMonth: ym };
-      companies.forEach((c) => {
-        merged[ym][c.name] = 0; // 회사별 초기값은 0 으로 세팅했습니다.
-      });
-    });
-
-    companies.forEach((company) => {
-      company.emissions.forEach((e) => {
-        if (merged[e.yearMonth]) {
-          merged[e.yearMonth][company.name] = e.emissions;
-        }
-      });
-    });
-
-    return Object.values(merged);
-  }, [companies, period]);
-
+  const { filteredData, keys, period, setPeriod } = useFilteredEmissions({ companies });
   return (
     <>
       <section>
@@ -88,7 +63,7 @@ export default function CompanyChart() {
         </div>
 
         {/* 차트 영역 */}
-        {companies && companies.length > 0 && <BaseLineChart data={filteredData} colors={generateColors(companies?.length)} keys={companies?.map((c) => c.name) ?? []} />}
+        {companies && companies.length > 0 && <BaseLineChart data={filteredData} colors={generateColors(companies?.length)} keys={keys} />}
       </section>
       {isLoading && <Loading />}
       {error && isError && <ErrorModal message={error.message} onClose={refetch} />}
