@@ -20,7 +20,7 @@ import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 
 // Utils
-import { generateColors, generateYearMonthRangeFromData } from "../../../utils";
+import { generateColors, generateYearMonthRangeFromData } from "@/utils";
 
 const BaseLineChart = dynamic(() => import("@/components/common/BaseLineChart"), { ssr: false });
 
