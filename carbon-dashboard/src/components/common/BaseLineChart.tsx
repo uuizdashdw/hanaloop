@@ -20,7 +20,7 @@ export default function BaseLineChart({ data, colors = [], keys }: BaseLineChart
         <Tooltip />
         <Legend />
         {keys.map((key, idx) => (
-          <Line key={key} type="monotone" dataKey={key} stroke={colors[idx % colors.length] || `hsl(${idx * 60}, 70%, 50%)`} strokeWidth={2} dot={false} />
+          <Line key={key} type="monotone" dataKey={key} name={key === "emissions" ? "배출량" : key} stroke={colors[idx % colors.length] || `hsl(${idx * 60}, 70%, 50%)`} strokeWidth={2} dot={false} />
         ))}
       </LineChart>
     </ResponsiveContainer>

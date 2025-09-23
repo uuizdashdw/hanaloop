@@ -25,3 +25,19 @@ export const generateYearMonthRangeFromData = (companies: Company[], months: num
   }
   return result;
 };
+
+export const transformCountryCode = (code: string) => {
+  if (code === "US") return "미국";
+  if (code === "DE") return "독일";
+  return "";
+};
+
+export const COUNTRY_MAP: Record<string, string> = {
+  US: "미국",
+  DE: "독일",
+  DK: "덴마크",
+  KR: "대한민국",
+  JP: "일본",
+  CN: "중국",
+  FR: "프랑스",
+};
