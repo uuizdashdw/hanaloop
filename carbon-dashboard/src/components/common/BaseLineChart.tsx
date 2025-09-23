@@ -1,6 +1,7 @@
 "use client";
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { memo } from "react";
 
 type BaseLineChartProps = {
   data: Record<string, string | number>[];
@@ -8,7 +9,7 @@ type BaseLineChartProps = {
   keys: string[];
 };
 
-export default function BaseLineChart({ data, colors = [], keys }: BaseLineChartProps) {
+function BaseLineChartComponent({ data, colors = [], keys }: BaseLineChartProps) {
   if (!data || data.length === 0) return <p>데이터가 없습니다</p>;
 
   return (
@@ -26,3 +27,8 @@ export default function BaseLineChart({ data, colors = [], keys }: BaseLineChart
     </ResponsiveContainer>
   );
 }
+
+export default memo(
+  BaseLineChartComponent,
+  (prev, next) => prev.data === next.data && prev.keys.join(",") === next.keys.join(",") && (prev.colors?.join(",") ?? "") === (next.colors?.join(",") ?? ""),
+);
