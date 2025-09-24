@@ -1,4 +1,4 @@
-import { Company, Country, Post } from "@/types";
+import { Company, Post } from "@/types";
 import { create } from "zustand";
 
 type PostsState = {

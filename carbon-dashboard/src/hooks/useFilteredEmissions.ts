@@ -3,7 +3,7 @@
 import { usePeriodStore } from "@/store/period";
 import { Company } from "@/types";
 import { COUNTRY_MAP, generateYearMonthRangeFromData } from "@/utils";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 type UseFilteredEmissionsProps =
   | { company: Company; companies?: never } // 상세 페이지
