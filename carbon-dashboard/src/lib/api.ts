@@ -1,11 +1,11 @@
 // Types
 import { Post } from "@/types";
 
+// Utils
+import { delay, jitter, maybeFail } from "@/utils";
+
 // Seed Data
 import { companies, posts, countries } from "./data";
-
-// Utils
-import { delay, jitter, maybeFail } from "../../utils";
 
 const _countries = [...countries];
 const _companies = [...companies];
