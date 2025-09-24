@@ -29,7 +29,7 @@ export const generateYearMonthRangeFromData = (companies: Company[], months: num
 export const transformCountryCode = (code: string) => {
   if (code === "US") return "미국";
   if (code === "DE") return "독일";
-  return "";
+  return "한국";
 };
 
 export const COUNTRY_MAP: Record<string, string> = {

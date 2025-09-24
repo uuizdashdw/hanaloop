@@ -1,8 +1,5 @@
-// APIs
+// Components
 import CompanyChart from "@/components/company/CompanyChart";
-import { fetchCompanies, fetchCountries } from "@/lib/api";
-
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 export default async function Home() {
   return (
