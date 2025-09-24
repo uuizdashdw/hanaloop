@@ -3,7 +3,7 @@
 import { usePeriodStore } from "@/store/period";
 import { Company } from "@/types";
 import { COUNTRY_MAP, generateYearMonthRangeFromData } from "@/utils";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 type UseFilteredEmissionsProps =
   | { company: Company; companies?: never } // 상세 페이지
@@ -13,50 +13,34 @@ export const useFilteredEmissions = ({ company, companies }: UseFilteredEmission
   const { period, setPeriod } = usePeriodStore();
 
   const filteredData = useMemo(() => {
+    // 단일 회사
     if (company) {
-      // ✅ 상세 페이지: 단일 회사 데이터
       const months = generateYearMonthRangeFromData([company], period);
 
-      const map: Record<string, any> = {};
-      months.forEach((ym) => {
-        map[ym] = { yearMonth: ym, 배출량: 0 };
+      return months.map((ym) => {
+        const emission = company.emissions.find((e) => e.yearMonth === ym);
+        return { yearMonth: ym, 배출량: emission ? emission.emissions : 0 };
       });
-
-      company.emissions.forEach((e) => {
-        if (map[e.yearMonth]) {
-          map[e.yearMonth].배출량 = e.emissions;
-        }
-      });
-
-      return Object.values(map);
     }
 
+    // 여러 회사
     if (companies && companies.length > 0) {
-      // ✅ 메인 페이지: 여러 회사 데이터
       const months = generateYearMonthRangeFromData(companies, period);
 
-      const merged: Record<string, any> = {};
-      months.forEach((ym) => {
-        merged[ym] = { yearMonth: ym };
+      return months.map((ym) => {
+        const row: Record<string, any> = { yearMonth: ym };
+
         companies.forEach((c) => {
           const label = `${c.name} (${COUNTRY_MAP[c.country] ?? c.country})`;
-          merged[ym][label] = 0;
+          const emission = c.emissions.find((e) => e.yearMonth === ym);
+          row[label] = emission ? emission.emissions : 0;
         });
-      });
 
-      companies.forEach((c) => {
-        const label = `${c.name} (${COUNTRY_MAP[c.country] ?? c.country})`;
-        c.emissions.forEach((e) => {
-          if (merged[e.yearMonth]) {
-            merged[e.yearMonth][label] = e.emissions;
-          }
-        });
+        return row;
       });
-
-      return Object.values(merged);
     }
 
-    return [];
+    return null;
   }, [company, companies, period]);
 
   const keys = useMemo(() => {

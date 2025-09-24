@@ -3,7 +3,7 @@ export default function ChartSkeleton() {
     <div className="w-full h-[400px] animate-pulse bg-gray-100 rounded-lg p-4">
       {/* X축 영역 */}
       <div className="h-full flex flex-col justify-between">
-        {/* 차트 내부 가짜 라인들 */}
+        {/* 차트 내부 가짜 라인 영역 */}
         <div className="h-1/5 w-full bg-gray-200 rounded"></div>
         <div className="h-1/5 w-[90%] bg-gray-200 rounded"></div>
         <div className="h-1/5 w-[80%] bg-gray-200 rounded"></div>
